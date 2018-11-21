@@ -1,0 +1,4 @@
+install:
+  - git clone https://github.com/ros-industrial/industrial_ci.git .ros_ci
+script:
+  - .ros_ci/travis.sh
