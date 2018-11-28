@@ -18,6 +18,12 @@ The source code is released under [LGPL 2.1]. However, this package uses `h264_e
 - Lunar
 - Melodic
 
+### Build status
+
+* Travis CI: [![Build Status](https://travis-ci.org/aws-robotics/kinesisvideo-encoder-ros1.svg?branch=master)](https://travis-ci.org/aws-robotics/kinesisvideo-encoder-ros1)
+ * ROS build farm:
+   * v1.0.0:
+     * ROS Kinetic @ u16.04 Xenial [![Build Status](http://build.ros.org/job/Kbin_uX64__h264_video_encoder__ubuntu_xenial_amd64__binary/badge/icon)](http://build.ros.org/job/Kbin_uX64__h264_video_encoder__ubuntu_xenial_amd64__binary)
 
 ## Installation
 
