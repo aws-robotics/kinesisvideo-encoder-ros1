@@ -31,7 +31,7 @@ The source code is released under [LGPL 2.1]. However, this package uses `h264_e
 Create a ROS workspace and a source directory
 
     mkdir -p ~/ros-workspace/src
-    
+
 To build from source, clone the latest version from master branch and compile the package.
 
 - Clone the package into the source directory
@@ -60,6 +60,38 @@ To build from source, clone the latest version from master branch and compile th
         colcon build --packages-select h264_video_encoder --cmake-target tests
         colcon test --packages-select h264_video_encoder h264_encoder core && colcon test-results --all
 
+
+### Building on Cloud9 - Cross Compilation
+
+- In RoboMaker's Cloud9, start with an empty workspace and in the Cloud9 console:
+
+       # build docker image
+       cd /opt/robomaker/cross-compilation-dockerfile/
+       sudo bin/build_image.bash  # this step will take a while
+
+       # create workspace
+       mkdir -p ~/environment/robot_ws/src
+       cd ~/environment/robot_ws/src
+       git clone https://github.com/aws-robotics/kinesisvideo-encoder-common.git
+       git clone https://github.com/aws-robotics/kinesisvideo-encoder-ros1.git
+
+       # run docker image
+       cd ..
+       sudo docker run -v $(pwd):/ws -it ros-cross-compile:armhf
+
+- Now you're inside the cross-compilation docker container
+
+       # build the workspace
+       cd ws
+       apt update
+       rosdep install --from-paths src --ignore-src -r -y  # this step will take a while
+       colcon build --build-base armhf_build --install-base armhf_install
+       colcon bundle --build-base armhf_build --install-base armhf_install --bundle-base armhf_bundle --apt-sources-list /opt/cross/apt-sources.yaml   # this step will take a while
+       exit
+
+- Now you're oustide the cross-compilation docker container
+
+       aws s3 cp armhf_bundle/output.tar.gz s3://ohayon-test/h264_video_encoder.armhf.tar
 
 ## Launch Files
 A launch file called `h264_video_encoder.launch` is included in this package. The launch file uses the following arguments:
