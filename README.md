@@ -91,7 +91,8 @@ To build from source, clone the latest version from master branch and compile th
 
 - Now you're oustide the cross-compilation docker container
 
-       aws s3 cp armhf_bundle/output.tar.gz s3://ohayon-test/h264_video_encoder.armhf.tar
+       # for more on copying s3 buckets see: https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html
+       aws s3 cp armhf_bundle/output.tar.gz s3://<bucket_name_in_your_robomaker_account>/h264_video_encoder.armhf.tar
 
 ## Launch Files
 A launch file called `h264_video_encoder.launch` is included in this package. The launch file uses the following arguments:
