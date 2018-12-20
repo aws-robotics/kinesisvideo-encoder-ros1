@@ -8,6 +8,7 @@ notifications:
     on_failure: always
     recipients:
       - ros-contributions@amazon.com
+      - travis-build@platform-notifications.robomaker.aws.a2z.com 
 env:
   matrix:
     - ROS_DISTRO="kinetic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
