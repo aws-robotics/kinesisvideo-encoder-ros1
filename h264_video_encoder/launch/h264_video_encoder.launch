@@ -12,12 +12,16 @@
     <arg name="node_name" default="h264_video_encoder" />
     <!-- If a config file argument is provided by the caller then we will load it into the node's namespace -->
     <arg name="config_file" default="" />
+    <!-- The output argument sets the node's stdout/stderr location. Set to 'screen' to see this node's output in the terminal. -->
+    <arg name="output" default="log" />
+    <!-- The image transport used by the video encoder. This can be 'raw' or 'compressed -->
+    <arg name="image_transport" default="compressed" />
 
-    <node name="$(arg node_name)" pkg="h264_video_encoder" type="h264_video_encoder">
+    <node name="$(arg node_name)" pkg="h264_video_encoder" type="h264_video_encoder" output="$(arg output)">
         <!-- If the caller specified a config file then load it here. -->
         <rosparam if="$(eval config_file!='')" command="load" file="$(arg config_file)"/>
 
         <!-- Name of image transport to use when subscribing to a sensor message topic -->
-        <param name="image_transport" value="compressed"/>
+        <param name="image_transport" value="$(arg image_transport)"/>
     </node>
 </launch>
