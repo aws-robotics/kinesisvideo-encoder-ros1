@@ -15,7 +15,6 @@ The source code is released under [LGPL 2.1]. However, this package uses `h264_e
 
 ### Supported ROS Distributions
 - Kinetic
-- Lunar
 - Melodic
 
 ### Build status
