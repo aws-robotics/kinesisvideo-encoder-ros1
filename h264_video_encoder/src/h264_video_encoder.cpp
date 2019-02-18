@@ -107,29 +107,29 @@ void ImageCallback(const sensor_msgs::ImageConstPtr & msg, const H264Encoder * e
   ++frame_num;
 }
 
-AwsError RunEncoderNode(int argc, char ** argv)
+void InitializeCommunication(ros::NodeHandle & nh,
+                             ros::Subscriber& metadata_sub,
+                             image_transport::Subscriber& image_sub,
+                             ros::Publisher& pub,
+                             std::unique_ptr<H264Encoder>& encoder,
+                             uint64_t & frame_num,
+                             kinesis_video_msgs::KinesisImageMetadata & metadata,
+                             Aws::Client::Ros1NodeParameterReader & param_reader
+                            )
 {
-  ros::init(argc, argv, "h264_video_encoder");
-  ros::NodeHandle nh("~");
-
-  Aws::Utils::Logging::InitializeAWSLogging(
-    Aws::MakeShared<Aws::Utils::Logging::AWSROSLogger>("h264_video_encoder"));
-  AWS_LOG_INFO(__func__, "Starting H264 Video Node...");
   //
   // reading parameters
   //
-  Aws::Client::Ros1NodeParameterReader param_reader;
   H264EncoderNodeParams params;
   GetH264EncoderNodeParams(param_reader, params);
 
+
+  pub = nh.advertise<kinesis_video_msgs::KinesisVideoFrame>(params.publication_topic,
+                                                                           params.queue_size);
   //
   // subscribing to topic with callback
   //
-  std::unique_ptr<H264Encoder> encoder;
-  uint64_t frame_num = 0;
-  kinesis_video_msgs::KinesisImageMetadata metadata;
-  ros::Publisher pub = nh.advertise<kinesis_video_msgs::KinesisVideoFrame>(params.publication_topic,
-                                                                           params.queue_size);
+
 
   boost::function<void(const sensor_msgs::ImageConstPtr &)> image_callback;
   image_callback = [&](const sensor_msgs::ImageConstPtr & msg) -> void {
@@ -146,7 +146,7 @@ AwsError RunEncoderNode(int argc, char ** argv)
   };
 
   image_transport::ImageTransport it(nh);
-  image_transport::Subscriber image_sub =
+  image_sub =
     it.subscribe(params.subscription_topic, params.queue_size, image_callback);
   AWS_LOGSTREAM_INFO(__func__, "subscribed to " << params.subscription_topic << "...");
 
@@ -155,10 +155,31 @@ AwsError RunEncoderNode(int argc, char ** argv)
   metadata_callback = [&](const kinesis_video_msgs::KinesisImageMetadata::ConstPtr & msg) -> void {
     metadata.metadata.insert(metadata.metadata.end(), msg->metadata.begin(), msg->metadata.end());
   };
-  ros::Subscriber metadata_sub =
+  metadata_sub =
     nh.subscribe(params.metadata_topic, params.queue_size, metadata_callback);
   AWS_LOGSTREAM_INFO(__func__, "subscribed to " << params.metadata_topic << " for metadata...");
+}
 
+AwsError RunEncoderNode(int argc, char ** argv)
+{
+  ros::init(argc, argv, "h264_video_encoder");
+  ros::NodeHandle nh("~");
+  
+  Aws::Utils::Logging::InitializeAWSLogging(
+    Aws::MakeShared<Aws::Utils::Logging::AWSROSLogger>("h264_video_encoder"));
+  AWS_LOG_INFO(__func__, "Starting H264 Video Node...");
+
+  ros::Publisher pub;
+  image_transport::Subscriber image_sub;
+  ros::Subscriber metadata_sub;
+  std::unique_ptr<H264Encoder> encoder;
+  uint64_t frame_num;
+  kinesis_video_msgs::KinesisImageMetadata metadata;
+  Aws::Client::Ros1NodeParameterReader param_reader;
+
+  InitializeCommunication(nh, metadata_sub, image_sub, pub,
+                          encoder, frame_num, metadata, param_reader);
+  
   //
   // run the node
   //
