@@ -1,5 +1,5 @@
-sudo: required 
-language: generic 
+sudo: required
+language: generic
 compiler:
   - gcc
 notifications:
@@ -8,22 +8,22 @@ notifications:
     on_failure: always
     recipients:
       - ros-contributions@amazon.com
-      - travis-build@platform-notifications.robomaker.aws.a2z.com 
+      - travis-build@platform-notifications.robomaker.aws.a2z.com
 env:
+  global:
+    - GITHUB_ACCOUNT=aws-robotics
+    # uncomment PACKAGE_NAME to build unit tests - REQUIRED if you'd like to run unit tests using colcon
+    - PACKAGE_NAME=h264_video_encoder
   matrix:
-    - ROS_DISTRO="kinetic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
-    - ROS_DISTRO="kinetic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
-    - ROS_DISTRO="lunar"   ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
-    - ROS_DISTRO="lunar"   ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
-    - ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
-    - ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
+    # define DOWNSTREAM_GITHUB_REPO=name-of-your-repo if you'd like to trigger downstream repos' travis builds
+    - ROS_DISTRO=kinetic ROS_VERSION=1
+    - ROS_DISTRO=lunar   ROS_VERSION=1
+    - ROS_DISTRO=melodic ROS_VERSION=1
 matrix:
   allow_failures:
-    - env: ROS_DISTRO="lunar"   ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
-    - env: ROS_DISTRO="lunar"   ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
-    - env: ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
-    - env: ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
+    - env: ROS_DISTRO=lunar   ROS_VERSION=1
+    - env: ROS_DISTRO=melodic ROS_VERSION=1
 install:
-  - git clone https://github.com/ros-industrial/industrial_ci.git .ros_ci
+  - git clone https://github.com/aws-robotics/travis-scripts.git .ros_ci
 script:
-  - .ros_ci/travis.sh
+  - .ros_ci/ce_build.sh
