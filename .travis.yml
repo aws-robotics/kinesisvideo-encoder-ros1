@@ -1,4 +1,4 @@
-sudo: required 
+sudo: required
 language: generic 
 compiler:
   - gcc
@@ -19,10 +19,7 @@ env:
     - ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
     - ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
 matrix:
-  allow_failures:
-    - env: ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
-    - env: ROS_DISTRO="melodic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
-install:
-  - git clone https://github.com/ros-industrial/industrial_ci.git .ros_ci
-script:
-  - .ros_ci/travis.sh
+  install:
+    - git clone https://github.com/ros-industrial/industrial_ci.git .ros_ci
+  script:
+    - .ros_ci/travis.sh
