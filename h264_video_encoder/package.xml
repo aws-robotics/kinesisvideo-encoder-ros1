@@ -13,19 +13,19 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend version_lt='2.0.0'>h264_encoder_core</build_depend>
-  <build_depend version_lt='2.0.0'>aws_ros1_common</build_depend>
+  <build_depend>h264_encoder_core</build_depend>
+  <build_depend>aws_ros1_common</build_depend>
   <build_depend>image_transport</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>sensor_msgs</build_depend>
-  <build_depend version_lt='2.0.0'>kinesis_video_msgs</build_depend>
+  <build_depend>kinesis_video_msgs</build_depend>
 
   <exec_depend>image_transport</exec_depend>
   <exec_depend>image_transport_plugins</exec_depend>
-  <exec_depend version_lt='2.0.0'>aws_ros1_common</exec_depend>
+  <exec_depend>aws_ros1_common</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend version_lt='2.0.0'>kinesis_video_msgs</exec_depend>
+  <exec_depend>kinesis_video_msgs</exec_depend>
 
   <test_depend>rostest</test_depend>
 </package>
