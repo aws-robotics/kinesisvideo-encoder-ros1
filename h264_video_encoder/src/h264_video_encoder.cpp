@@ -114,8 +114,7 @@ void InitializeCommunication(ros::NodeHandle & nh,
                              std::unique_ptr<H264Encoder>& encoder,
                              uint64_t & frame_num,
                              kinesis_video_msgs::KinesisImageMetadata & metadata,
-                             Aws::Client::Ros1NodeParameterReader & param_reader
-                            )
+                             Aws::Client::Ros1NodeParameterReader & param_reader)
 {
   //
   // reading parameters
@@ -125,12 +124,11 @@ void InitializeCommunication(ros::NodeHandle & nh,
 
 
   pub = nh.advertise<kinesis_video_msgs::KinesisVideoFrame>(params.publication_topic,
-                                                                           params.queue_size);
+                                                            params.queue_size);
+
   //
   // subscribing to topic with callback
   //
-
-
   boost::function<void(const sensor_msgs::ImageConstPtr &)> image_callback;
   image_callback = [&](const sensor_msgs::ImageConstPtr & msg) -> void {
     if (0 < pub.getNumSubscribers()) {
@@ -173,7 +171,7 @@ AwsError RunEncoderNode(int argc, char ** argv)
   image_transport::Subscriber image_sub;
   ros::Subscriber metadata_sub;
   std::unique_ptr<H264Encoder> encoder;
-  uint64_t frame_num;
+  uint64_t frame_num = 0;
   kinesis_video_msgs::KinesisImageMetadata metadata;
   Aws::Client::Ros1NodeParameterReader param_reader;
 
