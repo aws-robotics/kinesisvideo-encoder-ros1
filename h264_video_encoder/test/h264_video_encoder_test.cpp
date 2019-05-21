@@ -44,10 +44,10 @@ void ImageCallback(const sensor_msgs::ImageConstPtr & msg, const H264Encoder * e
                    ros::Publisher & pub);
 
 void InitializeCommunication(ros::NodeHandle & nh,
-                             ros::Subscriber& metadata_sub,
-                             image_transport::Subscriber& image_sub,
-                             ros::Publisher& pub,
-                             std::unique_ptr<H264Encoder>& encoder,
+                             ros::Subscriber & metadata_sub,
+                             image_transport::Subscriber & image_sub,
+                             ros::Publisher & pub,
+                             std::unique_ptr<H264Encoder> & encoder,
                              uint64_t & frame_num,
                              kinesis_video_msgs::KinesisImageMetadata & metadata,
                              Aws::Client::Ros1NodeParameterReader & param_reader
@@ -92,16 +92,16 @@ protected:
   {
     if (frame->index > 0) {
       EXPECT_GT(frame->index, prev_frame.index);
-      EXPECT_EQ(frame->duration, prev_frame.duration);
-      EXPECT_EQ((frame->decoding_ts - prev_frame.decoding_ts) % frame->duration, 0);
-      EXPECT_EQ((frame->presentation_ts - prev_frame.presentation_ts) % frame->duration, 0);
+      EXPECT_EQ(prev_frame.duration, frame->duration);
+      EXPECT_EQ(0, (frame->decoding_ts - prev_frame.decoding_ts) % frame->duration);
+      EXPECT_EQ(0, (frame->presentation_ts - prev_frame.presentation_ts) % frame->duration);
       EXPECT_GT(frame->presentation_ts, prev_frame.presentation_ts);
     }
 
     prev_frame = *frame;
     if (0 == prev_frame.index) {
-      fwrite(prev_frame.codec_private_data.data(), 1, prev_frame.codec_private_data.size(),
-             debug_file);
+      fwrite(prev_frame.codec_private_data.data(), 1,
+             prev_frame.codec_private_data.size(), debug_file);
     }
     fwrite(prev_frame.frame_data.data(), 1, prev_frame.frame_data.size(), debug_file);
   }
@@ -176,20 +176,20 @@ static void RainbowColor(const float h, uint8_t & r_out, uint8_t & g_out, uint8_
 
 void CreateImageMsg(sensor_msgs::ImagePtr & msg, int frame_num)
 {
-    ++msg->header.seq;
-    msg->header.stamp = ros::Time::now();
+  ++msg->header.seq;
+  msg->header.stamp = ros::Time::now();
 
-    // prepare a dummy image
-    int shift = static_cast<float>(frame_num) / (kNumTestFrames - 1) * kDefaultWidth;
-    for (int y = 0; y < kDefaultHeight; ++y) {
-      for (int x = 0; x < kDefaultWidth; ++x) {
-        uint8_t r, g, b;
-        RainbowColor(static_cast<float>((x + shift) % kDefaultWidth) / kDefaultWidth, r, g, b);
-        msg->data[kBytesPerPixel * y * kDefaultWidth + kBytesPerPixel * x + 0] = r;
-        msg->data[kBytesPerPixel * y * kDefaultWidth + kBytesPerPixel * x + 1] = g;
-        msg->data[kBytesPerPixel * y * kDefaultWidth + kBytesPerPixel * x + 2] = b;
-      }
+  // prepare a dummy image
+  int shift = static_cast<float>(frame_num) / (kNumTestFrames - 1) * kDefaultWidth;
+  for (int y = 0; y < kDefaultHeight; ++y) {
+    for (int x = 0; x < kDefaultWidth; ++x) {
+      uint8_t r, g, b;
+      RainbowColor(static_cast<float>((x + shift) % kDefaultWidth) / kDefaultWidth, r, g, b);
+      msg->data[kBytesPerPixel * y * kDefaultWidth + kBytesPerPixel * x + 0] = r;
+      msg->data[kBytesPerPixel * y * kDefaultWidth + kBytesPerPixel * x + 1] = g;
+      msg->data[kBytesPerPixel * y * kDefaultWidth + kBytesPerPixel * x + 2] = b;
     }
+  }
 }
 
 /**
@@ -235,27 +235,24 @@ TEST_F(H264EncoderNodeSuite, EncoderCallback)
 /**
  * Tests that InitializeCommunicaiton sets up the correct subscribers and publisher
  */
- 
+
 TEST_F(H264EncoderNodeSuite, InitializeCommunicaiton)
 {
   ros::NodeHandle nh("~");
   ros::Publisher pub;
   image_transport::Subscriber image_sub;
   ros::Subscriber metadata_sub;
-  uint64_t frame_num;
+  uint64_t frame_num = 0;
   kinesis_video_msgs::KinesisImageMetadata metadata;
   Aws::Client::Ros1NodeParameterReader param_reader;
-  Aws::Kinesis::  InitializeCommunication(nh, metadata_sub, image_sub, pub,
-                          encoder, frame_num, metadata, param_reader);
-  
+  Aws::Kinesis::InitializeCommunication(nh, metadata_sub, image_sub, pub,
+                                        encoder, frame_num, metadata, param_reader);
+
   EXPECT_EQ(kDefaultPublicationTopicName, pub.getTopic());
   EXPECT_EQ(kDefaultSubscriptionTopicName, image_sub.getTopic());
   EXPECT_EQ(kDefaultMetadataTopicName, metadata_sub.getTopic());
 
-  
-  debug_file = fopen("frames_intialize_communication.bin", "wb");
   // Test that callback function is properly set up
-  // let's encode 30 frames
   ros::NodeHandle sub_node;
   boost::function<void(const kinesis_video_msgs::KinesisVideoFrame::ConstPtr &)> callback;
   callback = [this](const kinesis_video_msgs::KinesisVideoFrame::ConstPtr & frame) -> void {
@@ -263,11 +260,15 @@ TEST_F(H264EncoderNodeSuite, InitializeCommunicaiton)
   };
   ros::Subscriber sub = sub_node.subscribe(kDefaultPublicationTopicName, 100, callback);
 
+  // setup the raw image source
   default_msg->data.resize(kBytesPerPixel * kDefaultWidth * kDefaultHeight);
   ros::NodeHandle pub_node("~");
   ros::Publisher image_pub =
     pub_node.advertise<sensor_msgs::Image>(kDefaultSubscriptionTopicName, 100);
+
+  // let's encode 30 frames of the raw image
   constexpr int kNumTestFrames = 30;
+  debug_file = fopen("frames_intialize_communication.bin", "wb");
   uint64_t prev_frame_index = 0, frame_index = 0;
   for (int i = 0; i < kNumTestFrames; ++i) {
     CreateImageMsg(default_msg, i);
@@ -276,9 +277,8 @@ TEST_F(H264EncoderNodeSuite, InitializeCommunicaiton)
     EXPECT_GE(frame_index, prev_frame_index);
     prev_frame_index = frame_index;
   }
-    fclose(debug_file);
 
-
+  fclose(debug_file);
 }
 
 
