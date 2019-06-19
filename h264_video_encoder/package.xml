@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>h264_video_encoder</name>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
   <description>ROS1 H264 encoder node</description>
   <url>http://wiki.ros.org/h264_video_encoder</url>
 
