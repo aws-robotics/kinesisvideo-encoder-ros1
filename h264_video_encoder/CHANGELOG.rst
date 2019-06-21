@@ -2,8 +2,8 @@
 Changelog for package h264_video_encoder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.2 (2019-06-21)
+------------------
 * Update package.xml for 1.1.2 release
   Signed-off-by: Ryan Newell <ryanewel@amazon.com>
 * fix issue with uninitialized frame number (`#19 <https://github.com/aws-robotics/kinesisvideo-encoder-ros1/issues/19>`_)
