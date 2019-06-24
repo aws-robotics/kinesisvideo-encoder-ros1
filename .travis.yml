@@ -12,8 +12,8 @@ notifications:
 env:
   global:
     - GITHUB_ACCOUNT=aws-robotics
-    # uncomment PACKAGE_NAME to build unit tests - REQUIRED if you'd like to run unit tests using colcon
-    - PACKAGE_NAME=h264_video_encoder
+    # uncomment PACKAGE_NAMES to build unit tests - REQUIRED if you'd like to run unit tests using colcon
+    - PACKAGE_NAMES=h264_video_encoder
   matrix:
     # define DOWNSTREAM_GITHUB_REPO=name-of-your-repo if you'd like to trigger downstream repos' travis builds
     - ROS_DISTRO=kinetic ROS_VERSION=1
