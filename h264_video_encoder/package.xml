@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>h264_video_encoder</name>
-  <version>1.0.0</version>
+  <version>1.1.2</version>
   <description>ROS1 H264 encoder node</description>
   <url>http://wiki.ros.org/h264_video_encoder</url>
 
@@ -10,22 +10,23 @@
 
   <license>LGPLv2.1</license>
 
-
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>h264_encoder_core</build_depend>
-  <build_depend version_lt='2.0.0'>aws_ros1_common</build_depend>
+  <build_depend version_lt='3.0.0'>aws_ros1_common</build_depend>
   <build_depend>image_transport</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>sensor_msgs</build_depend>
-  <build_depend version_lt='2.0.0'>kinesis_video_msgs</build_depend>
+  <build_depend version_lt='3.0.0'>kinesis_video_msgs</build_depend>
 
   <exec_depend>image_transport</exec_depend>
   <exec_depend>image_transport_plugins</exec_depend>
-  <exec_depend version_lt='2.0.0'>aws_ros1_common</exec_depend>
+  <exec_depend version_lt='3.0.0'>aws_ros1_common</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend version_lt='2.0.0'>kinesis_video_msgs</exec_depend>
+  <exec_depend version_lt='3.0.0'>kinesis_video_msgs</exec_depend>
 
+  <test_depend>gtest</test_depend>
+  <test_depend>google-mock</test_depend>
   <test_depend>rostest</test_depend>
 </package>
