@@ -68,7 +68,7 @@ _Note: If building the master branch instead of a release branch you may need to
 - Build and run the unit tests
 
         colcon build --packages-select h264_video_encoder --cmake-target tests
-        colcon test --packages-select h264_video_encoder h264_encoder core && colcon test-results --all
+        colcon test --packages-select h264_video_encoder h264_encoder_core && colcon test-results --all
 
 
 ### Building on Cloud9 - Cross Compilation
