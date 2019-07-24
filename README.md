@@ -45,10 +45,8 @@ To build from source you'll need to create a new workspace, clone and checkout t
 
 - Clone the package into the source directory . 
 
-    _Note: Replace __`{MAJOR.VERSION}`__ below with the latest major version number to get the latest release branch._
-
         cd ~/ros-workspace/src
-        git clone https://github.com/aws-robotics/kinesisvideo-encoder-ros1.git -b release-v{MAJOR.VERSION}
+        git clone https://github.com/aws-robotics/kinesisvideo-encoder-ros1.git -b release-latest
 
 - Install dependencies
 
