@@ -2,8 +2,8 @@
 Changelog for package h264_video_encoder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.3 (2019-08-01)
+------------------
 * increment patch version (`#31 <https://github.com/aws-robotics/kinesisvideo-encoder-ros1/issues/31>`_)
   Signed-off-by: Miaofei <miaofei@amazon.com>
 * Use standard CMake macros for adding gtest/gmock tests (`#25 <https://github.com/aws-robotics/kinesisvideo-encoder-ros1/issues/25>`_)
