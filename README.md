@@ -1,3 +1,6 @@
+### NOTE: This release branch is no longer maintained and is deprecated. Please consider the using the `release-latest` branch for the latest stable sources.
+
+
 # h264_video_encoder
 
 
