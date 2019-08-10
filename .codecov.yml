@@ -1,4 +1,6 @@
 coverage:
+  ignore:
+    - "**/test/*"
   status:
     # doc: https://docs.codecov.io/docs/commit-status
     project:
