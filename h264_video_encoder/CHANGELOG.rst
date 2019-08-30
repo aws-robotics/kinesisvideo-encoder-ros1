@@ -2,8 +2,8 @@
 Changelog for package h264_video_encoder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.4 (2019-08-29)
+------------------
 * increment patch number for bloom release (`#34 <https://github.com/aws-robotics/kinesisvideo-encoder-ros1/issues/34>`_)
 * Adds h264_encoder_core as exec_depend (`#33 <https://github.com/aws-robotics/kinesisvideo-encoder-ros1/issues/33>`_)
   This commit adds h264_encoder_core as an execution dependency. It also puts the dependencies into alphabetic order.
