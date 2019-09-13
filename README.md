@@ -39,6 +39,8 @@ On Ubuntu you can install the latest version of this package using the following
 
 To build from source you'll need to create a new workspace, clone and checkout the latest release branch of this repository, install all the dependencies, and compile. If you need the latest development features you can clone from the `master` branch instead of the latest release branch. While we guarantee the release branches are stable, __the `master` should be considered to have an unstable build__ due to ongoing development. 
 
+- Install build tool: please refer to `colcon` [installation guide](https://colcon.readthedocs.io/en/released/user/installation.html)
+
 - Create a ROS workspace and a source directory
 
         mkdir -p ~/ros-workspace/src
