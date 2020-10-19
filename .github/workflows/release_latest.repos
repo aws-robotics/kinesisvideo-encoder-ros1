@@ -1,0 +1,5 @@
+repositories:
+  kinesisvideo-encoder-ros1:
+    type: git
+    url: https://github.com/aws-robotics/kinesisvideo-encoder-ros1
+    version: release-latest
