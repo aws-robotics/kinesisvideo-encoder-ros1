@@ -29,16 +29,14 @@ jobs:
       ROS_DISTRO: ${{ matrix.ros_distro }}
       ROS_VERSION: 1
     steps:
-    # TODO(setup-ros-docker#7): calling chown is necessary for now
-    - name: Run setup-ros-docker workaround
-      run: sudo chown -R rosbuild:rosbuild "$HOME" .
     # Needed to access the vcs repos file from the workspace
     - name: Checkout source
       uses: actions/checkout@v2
     - name: Run action-ros-ci to build and test
-      uses: ros-tooling/action-ros-ci@0.0.17
+      uses: ros-tooling/action-ros-ci@0.1.0
       with:
-        source-ros-binary-installation: ${{ matrix.ros_distro }}
+        target-ros1-distro: ${{ env.ROS_VERSION == '1' && matrix.ros_distro || '' }}
+        target-ros2-distro: ${{ env.ROS_VERSION == '2' && matrix.ros_distro || '' }}
         package-name: h264_video_encoder
         vcs-repo-file-url: ''
     - name: Upload resulting colcon logs
