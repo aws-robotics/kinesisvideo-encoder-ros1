@@ -37,7 +37,7 @@ jobs:
         # schedule runs against the default branch (master), so specify release-latest via repos file
         vcs-repo-file-url: "${{ github.workspace }}/.github/workflows/release_latest.repos"
     - name: Upload resulting colcon logs
-      uses: actions/upload-artifact@v2.2.2
+      uses: actions/upload-artifact@v2.2.4
       with:
         name: colcon-logs-${{ matrix.ubuntu_distro }}-ros-${{ matrix.ros_distro }}
         path: ros_ws/log
