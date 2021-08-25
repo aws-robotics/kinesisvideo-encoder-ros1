@@ -33,7 +33,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@v2
     - name: Run action-ros-ci to build and test
-      uses: ros-tooling/action-ros-ci@0.1.2
+      uses: ros-tooling/action-ros-ci@0.2.3
       with:
         target-ros1-distro: ${{ env.ROS_VERSION == '1' && matrix.ros_distro || '' }}
         target-ros2-distro: ${{ env.ROS_VERSION == '2' && matrix.ros_distro || '' }}
